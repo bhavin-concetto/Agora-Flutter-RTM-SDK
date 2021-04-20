@@ -86,8 +86,8 @@
            });
   }
   else if ([@"login" isEqualToString:name]) {
-    NSString *token = [[args objectForKey:@"token"] stringValue];
-    NSString *userId = [[args objectForKey:@"userId"] stringValue];
+    NSString *token = [args valueForKey:@"token"];
+    NSString *userId = [args valueForKey:@"userId"];
     [rtmClient.kit loginByToken:token user:userId completion:^(AgoraRtmLoginErrorCode errorCode) {
       result(@{@"errorCode": @(errorCode)});
     }];
@@ -340,14 +340,14 @@
     }];
   }
   else if ([@"createChannel" isEqualToString:name]) {
-    NSString *channelId = [[args objectForKey:@"channelId"] stringValue];
+    NSString *channelId = [args valueForKey:@"channelId"];
     RTMChannel *rtmChannel = [[RTMChannel alloc] initWithClientIndex:clientIndex channelId:channelId messenger:_messenger kit:rtmClient.kit];
     if (nil == rtmChannel) return result(@{@"errorCode": @(-1)});
     rtmClient.channels[channelId] = rtmChannel;
     result(@{@"errorCode": @(0)});
   }
   else if ([@"releaseChannel" isEqualToString:name]) {
-    NSString *channelId = [[args objectForKey:@"channelId"] stringValue];
+    NSString *channelId = [args valueForKey:@"channelId"];
     if (nil == rtmClient.channels[channelId]) return result(@{@"errorCode": @(-1)});
     [rtmClient.kit destroyChannelWithId:channelId];
     [rtmClient.channels removeObjectForKey:channelId];
