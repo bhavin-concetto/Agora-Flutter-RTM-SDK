@@ -378,10 +378,10 @@
     }];
   }
   else if ([@"sendMessage" isEqualToString:name]) {
-    NSString *text = [[args objectForKey:@"message"] stringValue];
+    NSString *text = [args valueForKey:@"message"];
     AgoraRtmMessage *message = [[AgoraRtmMessage new] initWithText:text];
-    BOOL offline = [[args objectForKey:@"offline"] boolValue];
-    BOOL historical = [[args objectForKey:@"historical"] boolValue];
+    BOOL offline = [args valueForKey:@"offline"];
+    BOOL historical = [args valueForKey:@"historical"];
     AgoraRtmSendMessageOptions *sendMessageOption = [[AgoraRtmSendMessageOptions alloc] init];
     sendMessageOption.enableOfflineMessaging = offline;
     sendMessageOption.enableHistoricalMessaging = historical;
@@ -416,7 +416,7 @@
   NSDictionary *callArguments = methodCall.arguments;
   NSString *call = callArguments[@"call"];
   NSDictionary *params = callArguments[@"params"];
-  
+
   if ([@"static" isEqualToString:call]) {
     [self handleStaticMethod:methodName params:params result:result];
   } else if ([@"AgoraRtmClient" isEqualToString:call]) {
