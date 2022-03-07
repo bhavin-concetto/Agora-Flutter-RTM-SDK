@@ -34,8 +34,8 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
     }
 
     private fun initPlugin(
-        context: Context,
-        binaryMessenger: BinaryMessenger
+            context: Context,
+            binaryMessenger: BinaryMessenger
     ) {
         applicationContext = context.applicationContext
         methodChannel = MethodChannel(binaryMessenger, "io.agora.rtm")
@@ -88,9 +88,9 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
     }
 
     private fun handleStaticMethod(
-        methodName: String?,
-        params: Map<String, Any>,
-        result: MethodChannel.Result
+            methodName: String?,
+            params: Map<String, Any>,
+            result: MethodChannel.Result
     ) {
         when (methodName) {
             "createInstance" -> {
@@ -111,27 +111,27 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                 }
 
                 val rtmClient = RTMClient(
-                    applicationContext,
-                    appId,
-                    nextClientIndex,
-                    registrar?.messenger() ?: binding!!.binaryMessenger,
-                    handler
+                        applicationContext,
+                        appId,
+                        nextClientIndex,
+                        registrar?.messenger() ?: binding!!.binaryMessenger,
+                        handler
                 )
                 result.success(
-                    hashMapOf(
-                        "errorCode" to 0,
-                        "index" to nextClientIndex
-                    )
+                        hashMapOf(
+                                "errorCode" to 0,
+                                "index" to nextClientIndex
+                        )
                 )
                 clients[nextClientIndex] = rtmClient
                 nextClientIndex++
             }
             "getSdkVersion" -> {
                 result.success(
-                    hashMapOf(
-                        "errorCode" to 0,
-                        "version" to RtmClient.getSdkVersion()
-                    )
+                        hashMapOf(
+                                "errorCode" to 0,
+                                "version" to RtmClient.getSdkVersion()
+                        )
                 )
             }
             else -> {
@@ -190,14 +190,14 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
 
                 runMainThread {
                     result.success(
-                        hashMapOf(
-                            "errorCode" to 0,
-                            "results" to hashMapOf(
-                                "setLogFileSize" to client.setLogFileSize(size),
-                                "setLogLevel" to client.setLogFilter(level),
-                                "setLogFile" to client.setLogFile(path)
+                            hashMapOf(
+                                    "errorCode" to 0,
+                                    "results" to hashMapOf(
+                                            "setLogFileSize" to client.setLogFileSize(size),
+                                            "setLogLevel" to client.setLogFilter(level),
+                                            "setLogFile" to client.setLogFile(path)
+                                    )
                             )
-                        )
                     )
                 }
             }
@@ -217,38 +217,38 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                 }
 
                 client.login(
-                    token,
-                    userId,
-                    object : ResultCallback<Void> {
-                        override fun onSuccess(resp: Void?) {
-                            runMainThread {
-                                result.success(hashMapOf("errorCode" to 0))
+                        token,
+                        userId,
+                        object : ResultCallback<Void> {
+                            override fun onSuccess(resp: Void?) {
+                                runMainThread {
+                                    result.success(hashMapOf("errorCode" to 0))
+                                }
                             }
-                        }
 
-                        override fun onFailure(code: ErrorInfo) {
-                            runMainThread {
-                                result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                            override fun onFailure(code: ErrorInfo) {
+                                runMainThread {
+                                    result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                                }
                             }
                         }
-                    }
                 )
             }
             "logout" -> {
                 client.logout(
-                    object : ResultCallback<Void> {
-                        override fun onSuccess(resp: Void?) {
-                            runMainThread {
-                                result.success(hashMapOf("errorCode" to 0))
+                        object : ResultCallback<Void> {
+                            override fun onSuccess(resp: Void?) {
+                                runMainThread {
+                                    result.success(hashMapOf("errorCode" to 0))
+                                }
                             }
-                        }
 
-                        override fun onFailure(code: ErrorInfo) {
-                            runMainThread {
-                                result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                            override fun onFailure(code: ErrorInfo) {
+                                runMainThread {
+                                    result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                                }
                             }
                         }
-                    }
                 )
             }
             "renewToken" -> {
@@ -260,44 +260,44 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                 }
 
                 client.renewToken(
-                    token,
-                    object : ResultCallback<Void> {
-                        override fun onSuccess(resp: Void?) {
-                            runMainThread {
-                                result.success(hashMapOf("errorCode" to 0))
+                        token,
+                        object : ResultCallback<Void> {
+                            override fun onSuccess(resp: Void?) {
+                                runMainThread {
+                                    result.success(hashMapOf("errorCode" to 0))
+                                }
                             }
-                        }
 
-                        override fun onFailure(code: ErrorInfo) {
-                            runMainThread {
-                                result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                            override fun onFailure(code: ErrorInfo) {
+                                runMainThread {
+                                    result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                                }
                             }
                         }
-                    }
                 )
             }
             "queryPeersOnlineStatus" -> {
                 var peerIds: Set<String>? = (args?.get("peerIds") as ArrayList<String>).toSet()
 
                 client.queryPeersOnlineStatus(peerIds,
-                    object : ResultCallback<MutableMap<String, Boolean>> {
-                        override fun onSuccess(resp: MutableMap<String, Boolean>) {
-                            runMainThread {
-                                result.success(
-                                    hashMapOf(
-                                        "errorCode" to 0,
-                                        "results" to resp
+                        object : ResultCallback<MutableMap<String, Boolean>> {
+                            override fun onSuccess(resp: MutableMap<String, Boolean>) {
+                                runMainThread {
+                                    result.success(
+                                            hashMapOf(
+                                                    "errorCode" to 0,
+                                                    "results" to resp
+                                            )
                                     )
-                                )
+                                }
                             }
-                        }
 
-                        override fun onFailure(code: ErrorInfo) {
-                            runMainThread {
-                                result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                            override fun onFailure(code: ErrorInfo) {
+                                runMainThread {
+                                    result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                                }
                             }
                         }
-                    }
                 )
             }
             "sendMessageToPeer" -> {
@@ -314,30 +314,30 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                     }
                 }
                 client.sendMessageToPeer(peerId,
-                    message,
-                    options,
-                    object : ResultCallback<Void> {
-                        override fun onSuccess(resp: Void?) {
-                            runMainThread {
-                                result.success(
-                                    hashMapOf(
-                                        "errorCode" to 0
+                        message,
+                        options,
+                        object : ResultCallback<Void> {
+                            override fun onSuccess(resp: Void?) {
+                                runMainThread {
+                                    result.success(
+                                            hashMapOf(
+                                                    "errorCode" to 0
+                                            )
                                     )
-                                )
+                                }
                             }
-                        }
 
-                        override fun onFailure(code: ErrorInfo) {
-                            runMainThread {
-                                result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                            override fun onFailure(code: ErrorInfo) {
+                                runMainThread {
+                                    result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                                }
                             }
                         }
-                    }
                 )
             }
             "setLocalUserAttributes" -> {
                 val attributes: List<Map<String, String>>? =
-                    args?.get("attributes") as List<Map<String, String>>
+                        args?.get("attributes") as List<Map<String, String>>
                 var localUserAttributes = ArrayList<RtmAttribute>()
                 attributes!!.forEach {
                     var rtmAttribute = RtmAttribute()
@@ -346,28 +346,28 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                     localUserAttributes.add(rtmAttribute)
                 }
                 client.setLocalUserAttributes(localUserAttributes,
-                    object : ResultCallback<Void> {
-                        override fun onSuccess(resp: Void?) {
-                            runMainThread {
-                                result.success(
-                                    hashMapOf(
-                                        "errorCode" to 0
+                        object : ResultCallback<Void> {
+                            override fun onSuccess(resp: Void?) {
+                                runMainThread {
+                                    result.success(
+                                            hashMapOf(
+                                                    "errorCode" to 0
+                                            )
                                     )
-                                )
+                                }
                             }
-                        }
 
-                        override fun onFailure(code: ErrorInfo) {
-                            runMainThread {
-                                result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                            override fun onFailure(code: ErrorInfo) {
+                                runMainThread {
+                                    result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                                }
                             }
                         }
-                    }
                 )
             }
             "addOrUpdateLocalUserAttributes" -> {
                 val attributes: List<Map<String, String>>? =
-                    args?.get("attributes") as List<Map<String, String>>
+                        args?.get("attributes") as List<Map<String, String>>
                 var localUserAttributes = ArrayList<RtmAttribute>()
                 attributes!!.forEach {
                     var rtmAttribute = RtmAttribute()
@@ -376,66 +376,66 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                     localUserAttributes.add(rtmAttribute)
                 }
                 client.addOrUpdateLocalUserAttributes(localUserAttributes,
-                    object : ResultCallback<Void> {
-                        override fun onSuccess(resp: Void?) {
-                            runMainThread {
-                                result.success(
-                                    hashMapOf(
-                                        "errorCode" to 0
+                        object : ResultCallback<Void> {
+                            override fun onSuccess(resp: Void?) {
+                                runMainThread {
+                                    result.success(
+                                            hashMapOf(
+                                                    "errorCode" to 0
+                                            )
                                     )
-                                )
+                                }
                             }
-                        }
 
-                        override fun onFailure(code: ErrorInfo) {
-                            runMainThread {
-                                result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                            override fun onFailure(code: ErrorInfo) {
+                                runMainThread {
+                                    result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                                }
                             }
                         }
-                    }
                 )
             }
             "deleteLocalUserAttributesByKeys" -> {
                 val keys: List<String>? = args?.get("keys") as List<String>
                 client.deleteLocalUserAttributesByKeys(keys,
-                    object : ResultCallback<Void> {
-                        override fun onSuccess(resp: Void?) {
-                            runMainThread {
-                                result.success(
-                                    hashMapOf(
-                                        "errorCode" to 0
+                        object : ResultCallback<Void> {
+                            override fun onSuccess(resp: Void?) {
+                                runMainThread {
+                                    result.success(
+                                            hashMapOf(
+                                                    "errorCode" to 0
+                                            )
                                     )
-                                )
+                                }
                             }
-                        }
 
-                        override fun onFailure(code: ErrorInfo) {
-                            runMainThread {
-                                result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                            override fun onFailure(code: ErrorInfo) {
+                                runMainThread {
+                                    result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                                }
                             }
                         }
-                    }
                 )
             }
             "clearLocalUserAttributes" -> {
                 client.clearLocalUserAttributes(
-                    object : ResultCallback<Void> {
-                        override fun onSuccess(resp: Void?) {
-                            runMainThread {
-                                result.success(
-                                    hashMapOf(
-                                        "errorCode" to 0
+                        object : ResultCallback<Void> {
+                            override fun onSuccess(resp: Void?) {
+                                runMainThread {
+                                    result.success(
+                                            hashMapOf(
+                                                    "errorCode" to 0
+                                            )
                                     )
-                                )
+                                }
                             }
-                        }
 
-                        override fun onFailure(code: ErrorInfo) {
-                            runMainThread {
-                                result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                            override fun onFailure(code: ErrorInfo) {
+                                runMainThread {
+                                    result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                                }
                             }
                         }
-                    }
                 )
             }
             "getUserAttributes" -> {
@@ -444,28 +444,28 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                     else -> null
                 }
                 client.getUserAttributes(userId,
-                    object : ResultCallback<List<RtmAttribute>> {
-                        override fun onSuccess(resp: List<RtmAttribute>) {
-                            var attributes: MutableMap<String, String> = HashMap<String, String>()
-                            resp.map {
-                                attributes[it.key] = it.value
-                            }
-                            runMainThread {
-                                result.success(
-                                    hashMapOf(
-                                        "errorCode" to 0,
-                                        "attributes" to attributes
+                        object : ResultCallback<List<RtmAttribute>> {
+                            override fun onSuccess(resp: List<RtmAttribute>) {
+                                var attributes: MutableMap<String, String> = HashMap<String, String>()
+                                resp.map {
+                                    attributes[it.key] = it.value
+                                }
+                                runMainThread {
+                                    result.success(
+                                            hashMapOf(
+                                                    "errorCode" to 0,
+                                                    "attributes" to attributes
+                                            )
                                     )
-                                )
+                                }
                             }
-                        }
 
-                        override fun onFailure(code: ErrorInfo) {
-                            runMainThread {
-                                result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                            override fun onFailure(code: ErrorInfo) {
+                                runMainThread {
+                                    result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                                }
                             }
-                        }
-                    })
+                        })
             }
             "getUserAttributesByKeys" -> {
                 val userId: String? = when {
@@ -478,29 +478,29 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                 }
 
                 client.getUserAttributesByKeys(userId,
-                    keys,
-                    object : ResultCallback<List<RtmAttribute>> {
-                        override fun onSuccess(resp: List<RtmAttribute>) {
-                            var attributes: MutableMap<String, String> = HashMap<String, String>()
-                            resp.map {
-                                attributes[it.key] = it.value
-                            }
-                            runMainThread {
-                                result.success(
-                                    hashMapOf(
-                                        "errorCode" to 0,
-                                        "attributes" to attributes
+                        keys,
+                        object : ResultCallback<List<RtmAttribute>> {
+                            override fun onSuccess(resp: List<RtmAttribute>) {
+                                var attributes: MutableMap<String, String> = HashMap<String, String>()
+                                resp.map {
+                                    attributes[it.key] = it.value
+                                }
+                                runMainThread {
+                                    result.success(
+                                            hashMapOf(
+                                                    "errorCode" to 0,
+                                                    "attributes" to attributes
+                                            )
                                     )
-                                )
+                                }
                             }
-                        }
 
-                        override fun onFailure(code: ErrorInfo) {
-                            runMainThread {
-                                result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                            override fun onFailure(code: ErrorInfo) {
+                                runMainThread {
+                                    result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                                }
                             }
-                        }
-                    })
+                        })
             }
             "setChannelAttributes" -> {
                 val channelId: String? = when {
@@ -512,7 +512,7 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                     else -> false
                 }
                 val attributes: List<Map<String, String>>? =
-                    args?.get("attributes") as List<Map<String, String>>
+                        args?.get("attributes") as List<Map<String, String>>
                 var channelAttributes = ArrayList<RtmChannelAttribute>()
                 attributes!!.forEach {
                     var rtmChannelAttribute = RtmChannelAttribute()
@@ -522,24 +522,24 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                 }
 
                 client.setChannelAttributes(channelId, channelAttributes,
-                    ChannelAttributeOptions(enableNotificationToChannelMembers),
-                    object : ResultCallback<Void> {
-                        override fun onSuccess(resp: Void?) {
-                            runMainThread {
-                                result.success(
-                                    hashMapOf(
-                                        "errorCode" to 0
+                        ChannelAttributeOptions(enableNotificationToChannelMembers),
+                        object : ResultCallback<Void> {
+                            override fun onSuccess(resp: Void?) {
+                                runMainThread {
+                                    result.success(
+                                            hashMapOf(
+                                                    "errorCode" to 0
+                                            )
                                     )
-                                )
+                                }
                             }
-                        }
 
-                        override fun onFailure(code: ErrorInfo) {
-                            runMainThread {
-                                result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                            override fun onFailure(code: ErrorInfo) {
+                                runMainThread {
+                                    result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                                }
                             }
                         }
-                    }
                 )
             }
             "addOrUpdateChannelAttributes" -> {
@@ -552,7 +552,7 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                     else -> false
                 }
                 val attributes: List<Map<String, String>>? =
-                    args?.get("attributes") as List<Map<String, String>>
+                        args?.get("attributes") as List<Map<String, String>>
                 var channelAttributes = ArrayList<RtmChannelAttribute>()
                 attributes!!.forEach {
                     var rtmChannelAttribute = RtmChannelAttribute()
@@ -561,24 +561,24 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                     channelAttributes.add(rtmChannelAttribute)
                 }
                 client.addOrUpdateChannelAttributes(channelId, channelAttributes,
-                    ChannelAttributeOptions(enableNotificationToChannelMembers),
-                    object : ResultCallback<Void> {
-                        override fun onSuccess(resp: Void?) {
-                            runMainThread {
-                                result.success(
-                                    hashMapOf(
-                                        "errorCode" to 0
+                        ChannelAttributeOptions(enableNotificationToChannelMembers),
+                        object : ResultCallback<Void> {
+                            override fun onSuccess(resp: Void?) {
+                                runMainThread {
+                                    result.success(
+                                            hashMapOf(
+                                                    "errorCode" to 0
+                                            )
                                     )
-                                )
+                                }
                             }
-                        }
 
-                        override fun onFailure(code: ErrorInfo) {
-                            runMainThread {
-                                result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                            override fun onFailure(code: ErrorInfo) {
+                                runMainThread {
+                                    result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                                }
                             }
                         }
-                    }
                 )
             }
             "deleteChannelAttributesByKeys" -> {
@@ -592,24 +592,24 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                 }
                 val keys: List<String>? = args?.get("keys") as List<String>
                 client.deleteChannelAttributesByKeys(channelId, keys,
-                    ChannelAttributeOptions(enableNotificationToChannelMembers),
-                    object : ResultCallback<Void> {
-                        override fun onSuccess(resp: Void?) {
-                            runMainThread {
-                                result.success(
-                                    hashMapOf(
-                                        "errorCode" to 0
+                        ChannelAttributeOptions(enableNotificationToChannelMembers),
+                        object : ResultCallback<Void> {
+                            override fun onSuccess(resp: Void?) {
+                                runMainThread {
+                                    result.success(
+                                            hashMapOf(
+                                                    "errorCode" to 0
+                                            )
                                     )
-                                )
+                                }
                             }
-                        }
 
-                        override fun onFailure(code: ErrorInfo) {
-                            runMainThread {
-                                result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                            override fun onFailure(code: ErrorInfo) {
+                                runMainThread {
+                                    result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                                }
                             }
                         }
-                    }
                 )
             }
             "clearChannelAttributes" -> {
@@ -622,24 +622,24 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                     else -> false
                 }
                 client.clearChannelAttributes(channelId,
-                    ChannelAttributeOptions(enableNotificationToChannelMembers),
-                    object : ResultCallback<Void> {
-                        override fun onSuccess(resp: Void?) {
-                            runMainThread {
-                                result.success(
-                                    hashMapOf(
-                                        "errorCode" to 0
+                        ChannelAttributeOptions(enableNotificationToChannelMembers),
+                        object : ResultCallback<Void> {
+                            override fun onSuccess(resp: Void?) {
+                                runMainThread {
+                                    result.success(
+                                            hashMapOf(
+                                                    "errorCode" to 0
+                                            )
                                     )
-                                )
+                                }
                             }
-                        }
 
-                        override fun onFailure(code: ErrorInfo) {
-                            runMainThread {
-                                result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                            override fun onFailure(code: ErrorInfo) {
+                                runMainThread {
+                                    result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                                }
                             }
                         }
-                    }
                 )
             }
             "getChannelAttributes" -> {
@@ -648,35 +648,35 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                     else -> null
                 }
                 client.getChannelAttributes(channelId,
-                    object : ResultCallback<List<RtmChannelAttribute>> {
-                        override fun onSuccess(resp: List<RtmChannelAttribute>) {
-                            var attributes = ArrayList<Map<String, Any>>()
-                            for (attribute in resp.orEmpty()) {
-                                attributes.add(
-                                    hashMapOf(
-                                        "key" to attribute.key,
-                                        "value" to attribute.value,
-                                        "userId" to attribute.getLastUpdateUserId(),
-                                        "updateTs" to attribute.getLastUpdateTs()
+                        object : ResultCallback<List<RtmChannelAttribute>> {
+                            override fun onSuccess(resp: List<RtmChannelAttribute>) {
+                                var attributes = ArrayList<Map<String, Any>>()
+                                for (attribute in resp.orEmpty()) {
+                                    attributes.add(
+                                            hashMapOf(
+                                                    "key" to attribute.key,
+                                                    "value" to attribute.value,
+                                                    "userId" to attribute.getLastUpdateUserId(),
+                                                    "updateTs" to attribute.getLastUpdateTs()
+                                            )
                                     )
-                                )
-                            }
-                            runMainThread {
-                                result.success(
-                                    hashMapOf(
-                                        "errorCode" to 0,
-                                        "attributes" to attributes
+                                }
+                                runMainThread {
+                                    result.success(
+                                            hashMapOf(
+                                                    "errorCode" to 0,
+                                                    "attributes" to attributes
+                                            )
                                     )
-                                )
+                                }
                             }
-                        }
 
-                        override fun onFailure(code: ErrorInfo) {
-                            runMainThread {
-                                result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                            override fun onFailure(code: ErrorInfo) {
+                                runMainThread {
+                                    result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                                }
                             }
-                        }
-                    })
+                        })
             }
             "getChannelAttributesByKeys" -> {
                 val channelId: String? = when {
@@ -689,36 +689,36 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                 }
 
                 client.getChannelAttributesByKeys(channelId,
-                    keys,
-                    object : ResultCallback<List<RtmChannelAttribute>> {
-                        override fun onSuccess(resp: List<RtmChannelAttribute>) {
-                            var attributes = ArrayList<Map<String, Any>>()
-                            for (attribute in resp.orEmpty()) {
-                                attributes.add(
-                                    hashMapOf(
-                                        "key" to attribute.key,
-                                        "value" to attribute.value,
-                                        "userId" to attribute.getLastUpdateUserId(),
-                                        "updateTs" to attribute.getLastUpdateTs()
+                        keys,
+                        object : ResultCallback<List<RtmChannelAttribute>> {
+                            override fun onSuccess(resp: List<RtmChannelAttribute>) {
+                                var attributes = ArrayList<Map<String, Any>>()
+                                for (attribute in resp.orEmpty()) {
+                                    attributes.add(
+                                            hashMapOf(
+                                                    "key" to attribute.key,
+                                                    "value" to attribute.value,
+                                                    "userId" to attribute.getLastUpdateUserId(),
+                                                    "updateTs" to attribute.getLastUpdateTs()
+                                            )
                                     )
-                                )
-                            }
-                            runMainThread {
-                                result.success(
-                                    hashMapOf(
-                                        "errorCode" to 0,
-                                        "attributes" to attributes
+                                }
+                                runMainThread {
+                                    result.success(
+                                            hashMapOf(
+                                                    "errorCode" to 0,
+                                                    "attributes" to attributes
+                                            )
                                     )
-                                )
+                                }
                             }
-                        }
 
-                        override fun onFailure(code: ErrorInfo) {
-                            runMainThread {
-                                result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                            override fun onFailure(code: ErrorInfo) {
+                                runMainThread {
+                                    result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                                }
                             }
-                        }
-                    })
+                        })
             }
             "sendLocalInvitation" -> {
                 val calleeId = when {
@@ -741,26 +741,26 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                     localInvitation.channelId = channelId
                 }
                 agoraClient.callKit.sendLocalInvitation(
-                    localInvitation,
-                    object : ResultCallback<Void> {
-                        override fun onSuccess(resp: Void?) {
-                            runMainThread {
-                                agoraClient.localInvitations[localInvitation.calleeId] =
-                                    localInvitation
-                                result.success(
-                                    hashMapOf(
-                                        "errorCode" to 0
+                        localInvitation,
+                        object : ResultCallback<Void> {
+                            override fun onSuccess(resp: Void?) {
+                                runMainThread {
+                                    agoraClient.localInvitations[localInvitation.calleeId] =
+                                            localInvitation
+                                    result.success(
+                                            hashMapOf(
+                                                    "errorCode" to 0
+                                            )
                                     )
-                                )
+                                }
                             }
-                        }
 
-                        override fun onFailure(code: ErrorInfo) {
-                            runMainThread {
-                                result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                            override fun onFailure(code: ErrorInfo) {
+                                runMainThread {
+                                    result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                                }
                             }
-                        }
-                    })
+                        })
             }
             "cancelLocalInvitation" -> {
                 val calleeId = when {
@@ -794,25 +794,25 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                     localInvitation.channelId = channelId
                 }
                 agoraClient.callKit.cancelLocalInvitation(
-                    localInvitation,
-                    object : ResultCallback<Void> {
-                        override fun onSuccess(resp: Void?) {
-                            runMainThread {
-                                agoraClient.localInvitations.remove(localInvitation.calleeId)
-                                result.success(
-                                    hashMapOf(
-                                        "errorCode" to 0
+                        localInvitation,
+                        object : ResultCallback<Void> {
+                            override fun onSuccess(resp: Void?) {
+                                runMainThread {
+                                    agoraClient.localInvitations.remove(localInvitation.calleeId)
+                                    result.success(
+                                            hashMapOf(
+                                                    "errorCode" to 0
+                                            )
                                     )
-                                )
+                                }
                             }
-                        }
 
-                        override fun onFailure(code: ErrorInfo) {
-                            runMainThread {
-                                result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                            override fun onFailure(code: ErrorInfo) {
+                                runMainThread {
+                                    result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                                }
                             }
-                        }
-                    })
+                        })
             }
             "acceptRemoteInvitation" -> {
                 val response = when {
@@ -841,25 +841,25 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                     remoteInvitation.response = response
                 }
                 agoraClient.callKit.acceptRemoteInvitation(
-                    remoteInvitation,
-                    object : ResultCallback<Void> {
-                        override fun onSuccess(resp: Void?) {
-                            runMainThread {
-                                agoraClient.remoteInvitations.remove(remoteInvitation.callerId)
-                                result.success(
-                                    hashMapOf(
-                                        "errorCode" to 0
+                        remoteInvitation,
+                        object : ResultCallback<Void> {
+                            override fun onSuccess(resp: Void?) {
+                                runMainThread {
+                                    agoraClient.remoteInvitations.remove(remoteInvitation.callerId)
+                                    result.success(
+                                            hashMapOf(
+                                                    "errorCode" to 0
+                                            )
                                     )
-                                )
+                                }
                             }
-                        }
 
-                        override fun onFailure(code: ErrorInfo) {
-                            runMainThread {
-                                result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                            override fun onFailure(code: ErrorInfo) {
+                                runMainThread {
+                                    result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                                }
                             }
-                        }
-                    })
+                        })
             }
             "refuseRemoteInvitation" -> {
                 val response = when {
@@ -889,35 +889,35 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                 }
 
                 agoraClient.callKit.refuseRemoteInvitation(
-                    remoteInvitation,
-                    object : ResultCallback<Void> {
-                        override fun onSuccess(resp: Void?) {
-                            runMainThread {
-                                agoraClient.remoteInvitations.remove(remoteInvitation.callerId)
-                                result.success(
-                                    hashMapOf(
-                                        "errorCode" to 0
+                        remoteInvitation,
+                        object : ResultCallback<Void> {
+                            override fun onSuccess(resp: Void?) {
+                                runMainThread {
+                                    agoraClient.remoteInvitations.remove(remoteInvitation.callerId)
+                                    result.success(
+                                            hashMapOf(
+                                                    "errorCode" to 0
+                                            )
                                     )
-                                )
+                                }
                             }
-                        }
 
-                        override fun onFailure(code: ErrorInfo) {
-                            runMainThread {
-                                result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                            override fun onFailure(code: ErrorInfo) {
+                                runMainThread {
+                                    result.success(hashMapOf("errorCode" to code.getErrorCode()))
+                                }
                             }
-                        }
-                    })
+                        })
             }
             "createChannel" -> {
                 val channelId = args?.get("channelId") as String
                 val agoraRtmChannel =
-                    RTMChannel(
-                        clientIndex,
-                        channelId,
-                        registrar?.messenger() ?: binding!!.binaryMessenger,
-                        handler
-                    )
+                        RTMChannel(
+                                clientIndex,
+                                channelId,
+                                registrar?.messenger() ?: binding!!.binaryMessenger,
+                                handler
+                        )
                 val channel: RtmChannel? = client.createChannel(channelId, agoraRtmChannel)
                 if (null == channel) {
                     runMainThread {
@@ -945,16 +945,54 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                     result.success(hashMapOf("errorCode" to 0))
                 }
             }
+            "getChannelMemberCount" -> {
+                val channelId: String? = when {
+                    args?.get("channelId") is String -> args.get("channelId") as String
+                    else -> null
+                }
+                client.getChannelMemberCount(listOf(channelId),
+                        object : ResultCallback<List<RtmChannelMemberCount>> {
+                            override fun onSuccess(resp: List<RtmChannelMemberCount>?) {
+                                var attributes = ArrayList<Map<String, Any>>()
+                                for (attribute in resp.orEmpty()) {
+                                    attributes.add(
+                                            hashMapOf(
+                                                    "channelID" to attribute.channelID,
+                                                    "memberCount" to attribute.memberCount,
+                                            )
+                                    )
+                                }
+                                runMainThread {
+                                    result.success(
+                                            hashMapOf(
+                                                    "errorCode" to 0,
+                                                    "attributes" to attributes
+                                            )
+                                    )
+                                }
+                            }
+
+                            override fun onFailure(code: ErrorInfo?) {
+                                code?.let {
+                                    runMainThread {
+                                        result.success(hashMapOf("errorCode" to it.errorCode))
+                                    }
+                                }
+                            }
+
+                        }
+                )
+            }
             else -> {
-                result.notImplemented();
+                result.notImplemented()
             }
         }
     }
 
     private fun handleChannelMethod(
-        methodName: String?,
-        params: Map<String, Any>,
-        result: MethodChannel.Result
+            methodName: String?,
+            params: Map<String, Any>,
+            result: MethodChannel.Result
     ) {
 
         val _clientIndex = (params["clientIndex"] as Int).toLong()
@@ -998,9 +1036,9 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                     override fun onSuccess(resp: Void?) {
                         runMainThread {
                             result.success(
-                                hashMapOf(
-                                    "errorCode" to 0
-                                )
+                                    hashMapOf(
+                                            "errorCode" to 0
+                                    )
                             )
                         }
                     }
@@ -1027,9 +1065,9 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                     override fun onSuccess(resp: Void?) {
                         runMainThread {
                             result.success(
-                                hashMapOf(
-                                    "errorCode" to 0
-                                )
+                                    hashMapOf(
+                                            "errorCode" to 0
+                                    )
                             )
                         }
                     }
@@ -1046,9 +1084,9 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                     override fun onSuccess(resp: Void?) {
                         runMainThread {
                             result.success(
-                                hashMapOf(
-                                    "errorCode" to 0
-                                )
+                                    hashMapOf(
+                                            "errorCode" to 0
+                                    )
                             )
                         }
                     }
@@ -1066,18 +1104,18 @@ class AgoraRtmPlugin : FlutterPlugin, MethodCallHandler {
                         val membersList = ArrayList<Map<String, String>>()
                         for (member in resp) {
                             membersList.add(
-                                hashMapOf(
-                                    "userId" to member.userId,
-                                    "channelId" to member.channelId
-                                )
+                                    hashMapOf(
+                                            "userId" to member.userId,
+                                            "channelId" to member.channelId
+                                    )
                             )
                         }
                         runMainThread {
                             result.success(
-                                hashMapOf(
-                                    "errorCode" to 0,
-                                    "members" to membersList
-                                )
+                                    hashMapOf(
+                                            "errorCode" to 0,
+                                            "members" to membersList
+                                    )
                             )
                         }
                     }

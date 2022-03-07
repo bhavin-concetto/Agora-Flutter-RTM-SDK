@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:agora_rtm/agora_rtm.dart';
 import 'package:flutter/material.dart';
 
+import 'api_id.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
@@ -33,8 +35,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context) => MaterialApp(
       home: Scaffold(
           appBar: AppBar(
             title: const Text('Agora Real Time Message'),
@@ -55,18 +56,14 @@ class _MyAppState extends State<MyApp> {
             ),
           )),
     );
-  }
 
   void _createClient() async {
     _client = await AgoraRtmClient.createInstance(YOUR_APP_ID);
     _client?.onMessageReceived = (AgoraRtmMessage message, String peerId) {
-      _log("Peer msg: " + peerId + ", msg: " + (message.text));
+      _log("Peer msg: $peerId, msg: ${message.text}");
     };
     _client?.onConnectionStateChanged = (int state, int reason) {
-      _log('Connection state changed: ' +
-          state.toString() +
-          ', reason: ' +
-          reason.toString());
+      _log('Connection state changed: $state, reason: $reason');
       if (state == 5) {
         _client?.logout();
         _log('Logout.');
@@ -102,7 +99,7 @@ class _MyAppState extends State<MyApp> {
       };
       channel.onMessageReceived =
           (AgoraRtmMessage message, AgoraRtmMember member) {
-        _log("Channel msg: " + member.userId + ", msg: " + message.text);
+        _log("Channel msg: ${member.userId}, msg: ${message.text}");
       };
     }
     return channel;
@@ -110,33 +107,31 @@ class _MyAppState extends State<MyApp> {
 
   static TextStyle textStyle = TextStyle(fontSize: 18, color: Colors.blue);
 
-  Widget _buildLogin() {
-    return Row(children: <Widget>[
+  Widget _buildLogin() => Row(children: <Widget>[
       _isLogin
-          ? new Expanded(
-              child: new Text('User Id: ' + _userNameController.text,
+          ? Expanded(
+              child: Text('User Id: ${_userNameController.text}',
                   style: textStyle))
-          : new Expanded(
-              child: new TextField(
+          : Expanded(
+              child: TextField(
                   controller: _userNameController,
                   decoration: InputDecoration(hintText: 'Input your user id'))),
-      new OutlineButton(
+      OutlineButton(
         child: Text(_isLogin ? 'Logout' : 'Login', style: textStyle),
         onPressed: _toggleLogin,
       )
     ]);
-  }
 
   Widget _buildQueryOnlineStatus() {
     if (!_isLogin) {
       return Container();
     }
     return Row(children: <Widget>[
-      new Expanded(
-          child: new TextField(
+      Expanded(
+          child: TextField(
               controller: _peerUserIdController,
               decoration: InputDecoration(hintText: 'Input peer user id'))),
-      new OutlineButton(
+      OutlineButton(
         child: Text('Query Online', style: textStyle),
         onPressed: _toggleQuery,
       )
@@ -148,11 +143,11 @@ class _MyAppState extends State<MyApp> {
       return Container();
     }
     return Row(children: <Widget>[
-      new Expanded(
-          child: new TextField(
+      Expanded(
+          child: TextField(
               controller: _peerMessageController,
               decoration: InputDecoration(hintText: 'Input peer message'))),
-      new OutlineButton(
+      OutlineButton(
         child: Text('Send to Peer', style: textStyle),
         onPressed: _toggleSendPeerMessage,
       )
@@ -164,12 +159,12 @@ class _MyAppState extends State<MyApp> {
       return Container();
     }
     return Row(children: <Widget>[
-      new Expanded(
-          child: new TextField(
+      Expanded(
+          child: TextField(
               controller: _invitationController,
               decoration:
                   InputDecoration(hintText: 'Input invitation content'))),
-      new OutlineButton(
+      OutlineButton(
         child: Text('Send local invitation', style: textStyle),
         onPressed: _toggleSendLocalInvitation,
       )
@@ -182,14 +177,14 @@ class _MyAppState extends State<MyApp> {
     }
     return Row(children: <Widget>[
       _isInChannel
-          ? new Expanded(
-              child: new Text('Channel: ' + _channelNameController.text,
+          ? Expanded(
+              child: Text('Channel: ${_channelNameController.text}',
                   style: textStyle))
-          : new Expanded(
-              child: new TextField(
+          : Expanded(
+              child: TextField(
                   controller: _channelNameController,
                   decoration: InputDecoration(hintText: 'Input channel id'))),
-      new OutlineButton(
+      OutlineButton(
         child: Text(_isInChannel ? 'Leave Channel' : 'Join Channel',
             style: textStyle),
         onPressed: _toggleJoinChannel,
@@ -202,11 +197,11 @@ class _MyAppState extends State<MyApp> {
       return Container();
     }
     return Row(children: <Widget>[
-      new Expanded(
-          child: new TextField(
+      Expanded(
+          child: TextField(
               controller: _channelMessageController,
               decoration: InputDecoration(hintText: 'Input channel message'))),
-      new OutlineButton(
+      OutlineButton(
         child: Text('Send to Channel', style: textStyle),
         onPressed: _toggleSendChannelMessage,
       )
@@ -218,15 +213,14 @@ class _MyAppState extends State<MyApp> {
       return Container();
     }
     return Row(children: <Widget>[
-      new OutlineButton(
+      OutlineButton(
         child: Text('Get Members in Channel', style: textStyle),
         onPressed: _toggleGetMembers,
       )
     ]);
   }
 
-  Widget _buildInfoList() {
-    return Expanded(
+  Widget _buildInfoList() => Expanded(
         child: Container(
             child: ListView.builder(
       itemExtent: 24,
@@ -238,7 +232,6 @@ class _MyAppState extends State<MyApp> {
       },
       itemCount: _infoStrings.length,
     )));
-  }
 
   void _toggleLogin() async {
     if (_isLogin) {
@@ -251,7 +244,7 @@ class _MyAppState extends State<MyApp> {
           _isInChannel = false;
         });
       } catch (errorCode) {
-        _log('Logout error: ' + errorCode.toString());
+        _log('Logout error: $errorCode');
       }
     } else {
       String userId = _userNameController.text;
@@ -262,12 +255,12 @@ class _MyAppState extends State<MyApp> {
 
       try {
         await _client?.login(null, userId);
-        _log('Login success: ' + userId);
+        _log('Login success: $userId');
         setState(() {
           _isLogin = true;
         });
       } catch (errorCode) {
-        _log('Login error: ' + errorCode.toString());
+        _log('Login error: $errorCode');
       }
     }
   }
@@ -281,9 +274,9 @@ class _MyAppState extends State<MyApp> {
     try {
       Map<dynamic, dynamic>? result =
           await _client?.queryPeersOnlineStatus([peerUid]);
-      _log('Query result: ' + result.toString());
+      _log('Query result: $result');
     } catch (errorCode) {
-      _log('Query error: ' + errorCode.toString());
+      _log('Query error: $errorCode');
     }
   }
 
@@ -306,7 +299,7 @@ class _MyAppState extends State<MyApp> {
       await _client?.sendMessageToPeer(peerUid, message, false);
       _log('Send peer message success.');
     } catch (errorCode) {
-      _log('Send peer message error: ' + errorCode.toString());
+      _log('Send peer message error: $errorCode');
     }
   }
 
@@ -330,7 +323,7 @@ class _MyAppState extends State<MyApp> {
       await _client?.sendLocalInvitation(invitation.toJson());
       _log('Send local invitation success.');
     } catch (errorCode) {
-      _log('Send local invitation error: ' + errorCode.toString());
+      _log('Send local invitation error: $errorCode');
     }
   }
 
@@ -348,7 +341,7 @@ class _MyAppState extends State<MyApp> {
           _isInChannel = false;
         });
       } catch (errorCode) {
-        _log('Leave channel error: ' + errorCode.toString());
+        _log('Leave channel error: $errorCode');
       }
     } else {
       String channelId = _channelNameController.text;
@@ -366,7 +359,7 @@ class _MyAppState extends State<MyApp> {
           _isInChannel = true;
         });
       } catch (errorCode) {
-        _log('Join channel error: ' + errorCode.toString());
+        _log('Join channel error: $errorCode');
       }
     }
   }
@@ -374,9 +367,9 @@ class _MyAppState extends State<MyApp> {
   void _toggleGetMembers() async {
     try {
       List<AgoraRtmMember>? members = await _channel?.getMembers();
-      _log('Members: ' + members.toString());
+      _log('Members: $members');
     } catch (errorCode) {
-      _log('GetMembers failed: ' + errorCode.toString());
+      _log('GetMembers failed: $errorCode');
     }
   }
 
@@ -390,7 +383,7 @@ class _MyAppState extends State<MyApp> {
       await _channel?.sendMessage(AgoraRtmMessage.fromText(text));
       _log('Send channel message success.');
     } catch (errorCode) {
-      _log('Send channel message error: ' + errorCode.toString());
+      _log('Send channel message error: $errorCode');
     }
   }
 

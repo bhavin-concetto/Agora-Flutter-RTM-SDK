@@ -16,9 +16,7 @@ class AgoraRtmMessage {
   Map<String, dynamic> toJson() => {'text': text, 'ts': ts, 'offline': offline};
 
   @override
-  String toString() {
-    return "{text: $text, ts: $ts, offline: $offline}";
-  }
+  String toString() => "{text: $text, ts: $ts, offline: $offline}";
 }
 
 class AgoraRtmMember {
@@ -37,9 +35,7 @@ class AgoraRtmMember {
       };
 
   @override
-  String toString() {
-    return "{uid: $userId, cid: $channelId}";
-  }
+  String toString() => "{uid: $userId, cid: $channelId}";
 }
 
 class AgoraRtmChannelAttribute {
@@ -65,9 +61,7 @@ class AgoraRtmChannelAttribute {
       };
 
   @override
-  String toString() {
-    return "{key: $key, value: $value, userId: $userId, updateTs: $updateTs}";
-  }
+  String toString() => "{key: $key, value: $value, userId: $userId, updateTs: $updateTs}";
 }
 
 class AgoraRtmLocalInvitation {
@@ -96,9 +90,7 @@ class AgoraRtmLocalInvitation {
       };
 
   @override
-  String toString() {
-    return "{calleeId: $calleeId, content: $content, response: $response, channelId: $channelId, state: $state}";
-  }
+  String toString() => "{calleeId: $calleeId, content: $content, response: $response, channelId: $channelId, state: $state}";
 }
 
 class AgoraRtmRemoteInvitation {
@@ -127,7 +119,27 @@ class AgoraRtmRemoteInvitation {
       };
 
   @override
-  String toString() {
-    return "{callerId: $callerId, content: $content, response: $response, channelId: $channelId, state: $state}";
+  String toString() => "{callerId: $callerId, content: $content, response: $response, channelId: $channelId, state: $state}";
+}
+
+class AgoraRtmChannelCount {
+  String? channelID;
+  int? memberCount;
+
+  AgoraRtmChannelCount({this.channelID, this.memberCount});
+
+  AgoraRtmChannelCount.fromJson(Map<dynamic, dynamic> json) {
+    channelID = json['channelID'];
+    memberCount = json['memberCount'];
   }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['channelID'] = channelID;
+    data['memberCount'] = memberCount;
+    return data;
+  }
+
+  @override
+  String toString() => 'AgoraRtmChannelCount{channelID: $channelID, memberCount: $memberCount}';
 }
