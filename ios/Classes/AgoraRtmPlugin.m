@@ -353,6 +353,21 @@
     [rtmClient.channels removeObjectForKey:channelId];
     result(@{@"errorCode": @(0)});
   }
+  else if ([@"getChannelMemberCount" isEqualToString:name]) {
+    NSString *channelId = [self getString:[args objectForKey:@"channelId"]];
+      NSArray *channels = @[channelId];
+      [rtmClient.kit getChannelMemberCount:channels completion:^(NSArray<AgoraRtmChannelMemberCount *> * _Nullable attributes, AgoraRtmChannelMemberCountErrorCode errorCode) {
+      NSMutableArray<NSDictionary*> *channelAttributes = [NSMutableArray new];
+      for(AgoraRtmChannelMemberCount *attribute in attributes) {
+        [channelAttributes addObject:@{
+          @"channelID": attribute.channelId,
+          @"memberCount": [NSNumber numberWithLongLong:attribute.count]
+        }];
+      }
+      result(@{@"errorCode": @(errorCode),
+               @"attributes": channelAttributes});
+    }];
+  }
   else {
     result(@{@"errorCode": @(-2), @"reason": FlutterMethodNotImplemented});
   }
