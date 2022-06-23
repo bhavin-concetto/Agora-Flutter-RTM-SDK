@@ -44,8 +44,8 @@ class AgoraRtmChannel {
 
   StreamSubscription<dynamic>? _eventSubscription;
 
-  EventChannel _addEventChannel() => EventChannel(
-        'io.agora.rtm.client$_clientIndex.channel$channelId');
+  EventChannel _addEventChannel() =>
+      EventChannel('io.agora.rtm.client$_clientIndex.channel$channelId');
 
   _eventListener(dynamic event) {
     final Map<dynamic, dynamic> map = event;
@@ -84,11 +84,12 @@ class AgoraRtmChannel {
         .listen(_eventListener, onError: onError);
   }
 
-  Future<dynamic> _callNative(String methodName, dynamic arguments) => AgoraRtmPlugin.callMethodForChannel(methodName, {
-      'clientIndex': _clientIndex,
-      'channelId': channelId,
-      'args': arguments
-    });
+  Future<dynamic> _callNative(String methodName, dynamic arguments) =>
+      AgoraRtmPlugin.callMethodForChannel(methodName, {
+        'clientIndex': _clientIndex,
+        'channelId': channelId,
+        'args': arguments
+      });
 
   Future<void> join() async {
     final res = await _callNative("join", null);

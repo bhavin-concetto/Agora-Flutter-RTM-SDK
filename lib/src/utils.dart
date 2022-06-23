@@ -61,7 +61,8 @@ class AgoraRtmChannelAttribute {
       };
 
   @override
-  String toString() => "{key: $key, value: $value, userId: $userId, updateTs: $updateTs}";
+  String toString() =>
+      "{key: $key, value: $value, userId: $userId, updateTs: $updateTs}";
 }
 
 class AgoraRtmLocalInvitation {
@@ -90,7 +91,8 @@ class AgoraRtmLocalInvitation {
       };
 
   @override
-  String toString() => "{calleeId: $calleeId, content: $content, response: $response, channelId: $channelId, state: $state}";
+  String toString() =>
+      "{calleeId: $calleeId, content: $content, response: $response, channelId: $channelId, state: $state}";
 }
 
 class AgoraRtmRemoteInvitation {
@@ -119,7 +121,8 @@ class AgoraRtmRemoteInvitation {
       };
 
   @override
-  String toString() => "{callerId: $callerId, content: $content, response: $response, channelId: $channelId, state: $state}";
+  String toString() =>
+      "{callerId: $callerId, content: $content, response: $response, channelId: $channelId, state: $state}";
 }
 
 class AgoraRtmChannelCount {
@@ -141,5 +144,6 @@ class AgoraRtmChannelCount {
   }
 
   @override
-  String toString() => 'AgoraRtmChannelCount{channelID: $channelID, memberCount: $memberCount}';
+  String toString() =>
+      'AgoraRtmChannelCount{channelID: $channelID, memberCount: $memberCount}';
 }

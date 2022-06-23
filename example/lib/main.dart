@@ -36,26 +36,26 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) => MaterialApp(
-      home: Scaffold(
-          appBar: AppBar(
-            title: const Text('Agora Real Time Message'),
-          ),
-          body: Container(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                _buildLogin(),
-                _buildQueryOnlineStatus(),
-                _buildSendPeerMessage(),
-                _buildSendLocalInvitation(),
-                _buildJoinChannel(),
-                _buildGetMembers(),
-                _buildSendChannelMessage(),
-                _buildInfoList(),
-              ],
+        home: Scaffold(
+            appBar: AppBar(
+              title: const Text('Agora Real Time Message'),
             ),
-          )),
-    );
+            body: Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  _buildLogin(),
+                  _buildQueryOnlineStatus(),
+                  _buildSendPeerMessage(),
+                  _buildSendLocalInvitation(),
+                  _buildJoinChannel(),
+                  _buildGetMembers(),
+                  _buildSendChannelMessage(),
+                  _buildInfoList(),
+                ],
+              ),
+            )),
+      );
 
   void _createClient() async {
     _client = await AgoraRtmClient.createInstance(YOUR_APP_ID);
@@ -108,19 +108,20 @@ class _MyAppState extends State<MyApp> {
   static TextStyle textStyle = TextStyle(fontSize: 18, color: Colors.blue);
 
   Widget _buildLogin() => Row(children: <Widget>[
-      _isLogin
-          ? Expanded(
-              child: Text('User Id: ${_userNameController.text}',
-                  style: textStyle))
-          : Expanded(
-              child: TextField(
-                  controller: _userNameController,
-                  decoration: InputDecoration(hintText: 'Input your user id'))),
-      OutlinedButton(
-        child: Text(_isLogin ? 'Logout' : 'Login', style: textStyle),
-        onPressed: _toggleLogin,
-      )
-    ]);
+        _isLogin
+            ? Expanded(
+                child: Text('User Id: ${_userNameController.text}',
+                    style: textStyle))
+            : Expanded(
+                child: TextField(
+                    controller: _userNameController,
+                    decoration:
+                        InputDecoration(hintText: 'Input your user id'))),
+        OutlinedButton(
+          child: Text(_isLogin ? 'Logout' : 'Login', style: textStyle),
+          onPressed: _toggleLogin,
+        )
+      ]);
 
   Widget _buildQueryOnlineStatus() {
     if (!_isLogin) {
@@ -221,17 +222,17 @@ class _MyAppState extends State<MyApp> {
   }
 
   Widget _buildInfoList() => Expanded(
-        child: Container(
-            child: ListView.builder(
-      itemExtent: 24,
-      itemBuilder: (context, i) {
-        return ListTile(
-          contentPadding: const EdgeInsets.all(0.0),
-          title: Text(_infoStrings[i]),
-        );
-      },
-      itemCount: _infoStrings.length,
-    )));
+          child: Container(
+              child: ListView.builder(
+        itemExtent: 24,
+        itemBuilder: (context, i) {
+          return ListTile(
+            contentPadding: const EdgeInsets.all(0.0),
+            title: Text(_infoStrings[i]),
+          );
+        },
+        itemCount: _infoStrings.length,
+      )));
 
   void _toggleLogin() async {
     if (_isLogin) {
