@@ -60,7 +60,7 @@ class AgoraRtmClient {
   void Function()? onTokenExpired;
 
   /// Occurs when you receive error events.
-  void Function()? onError;
+  void Function(dynamic error)? onError;
 
   /// Callback to the caller: occurs when the caller receives the call
   /// invitation.
